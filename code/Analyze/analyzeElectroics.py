@@ -3,29 +3,33 @@ import pandas as pd
 
 df = pd.read_csv('Analyze/AMZ_Data_Clean.csv')
 
-focus = df.loc[:, ['Number of Images', 'Category']]
-focus = focus.sort_values('Number of Images', ascending=False)
+# Liste des catégories
+categories = ['Electronics', 'Home & Kitchen', 'Video Games', 'Books', 'Software', 'Computers & Accessories', 'Camera & Photo', 'Sports & Outdoors', 'Musical Instruments', 'Toys & Games', 'Patio, Lawn & Garden', 'Pet Supplies', 'Office Products', 'Arts, Crafts & Sewing', 'Baby Products', 'Grocery & Gourmet Food', 'Cell Phones & Accessories', 'Health & Household', 'Handmade Products', 'Beauty & Personal Care', 'Appliances', 'Clothing, Shoes & Jewelry', 'Industrial & Scientific', 'Tools & Home Improvement', 'Kitchen & Dining', 'Movies & TV', 'CDs & Vinyl']
 
-electronics = df.loc[df['Category'] == 'Electronics', ['Number of Images']]
+# Calcule la moyenne du nombre d'images par produit pour chaque catégorie
+avg_images_per_category = []
+for cat in categories:
+    cat_df = df.loc[df['Category'] == cat, ['Number of Images']]
+    total_images = cat_df['Number of Images'].sum()
+    num_rows = cat_df.shape[0]
+    avg_images = round(total_images / num_rows, 1)
+    avg_images_per_category.append(avg_images)
 
-total_images = df['Number of Images'].sum()
-num_rows = df.shape[0]
+# Trier les catégories et les valeurs moyennes ensemble par ordre décroissant
+sorted_categories, sorted_avg_images = zip(*sorted(zip(categories, avg_images_per_category), key=lambda x: x[1], reverse=True))
 
-avg_images_per_row = round(total_images / num_rows, 1)
-
-categories = ['Electronics']
-category_counts = avg_images_per_row
 # Création du graphique
-plt.bar(categories, category_counts)
+plt.bar(sorted_categories, sorted_avg_images)
+
 # Configuration des labels et des titres
-plt.xlabel('Images')
+plt.xlabel('Catégories')
 plt.ylabel('Moyenne de nombre d\'images par produit')
 plt.title('Moyenne de nombre d\'images par produit pour chaque catégorie')
+plt.xticks(rotation=90)
 
 # Affichage du graphique
 plt.show()
 
-print("Moyenne d'images par ligne: ", avg_images_per_row)
 
 
 
