@@ -14,10 +14,10 @@ total_sales_per_price = []
 # Boucle à travers les catégories de prix et filtrage des données correspondantes
 for i in range(len(price_ranges)):
     if i == len(price_ranges)-1:
-        price_df = df.loc[(df['Price'] >= price_ranges[i]), ['Monthly Sales']]
+        price_df = df.loc[(df['Price'] >= price_ranges[i]), ['Monthly Revenue']]
     else:
-        price_df = df.loc[(df['Price'] >= price_ranges[i]) & (df['Price'] < price_ranges[i+1]), ['Monthly Sales']]
-    total_sales = price_df['Monthly Sales'].sum()
+        price_df = df.loc[(df['Price'] >= price_ranges[i]) & (df['Price'] < price_ranges[i+1]), ['Monthly Revenue']]
+    total_sales = price_df['Monthly Revenue'].sum()
     num_rows = price_df.shape[0]
     avg_sales = round(total_sales / num_rows, 1)
     total_sales_per_price.append(avg_sales)
@@ -28,8 +28,8 @@ plt.bar(price_ranges, total_sales_per_price)
 
 # Configuration des étiquettes et du titre
 plt.xlabel('Catégories de prix')
-plt.ylabel('Ventes moyennes')
-plt.title('Ventes moyennes par catégorie de prix')
+plt.ylabel('Revenu mensuel moyen')
+plt.title('Revenu mensuel moyen par prix')
 
 # Affichage du graphique
 plt.show()

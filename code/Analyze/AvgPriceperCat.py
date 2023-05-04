@@ -4,7 +4,12 @@ import pandas as pd
 df = pd.read_csv('Analyze/AMZ_Data_Clean.csv')
 
 # Liste des catégories
-categories = ['Electronics', 'Home & Kitchen', 'Video Games', 'Books', 'Software', 'Computers & Accessories', 'Camera & Photo', 'Sports & Outdoors', 'Musical Instruments', 'Toys & Games', 'Patio, Lawn & Garden', 'Pet Supplies', 'Office Products', 'Arts, Crafts & Sewing', 'Baby Products', 'Grocery & Gourmet Food', 'Cell Phones & Accessories', 'Health & Household', 'Handmade Products', 'Beauty & Personal Care', 'Appliances', 'Clothing, Shoes & Jewelry', 'Industrial & Scientific', 'Tools & Home Improvement', 'Kitchen & Dining', 'Movies & TV', 'CDs & Vinyl']
+categories = ['Electronics', 'Home & Kitchen', 'Video Games', 'Books', 'Software', 'Computers & Accessories', 
+              'Camera & Photo', 'Sports & Outdoors', 'Musical Instruments', 'Toys & Games', 'Patio, Lawn & Garden', 
+              'Pet Supplies', 'Office Products', 'Arts, Crafts & Sewing', 'Baby Products', 'Grocery & Gourmet Food', 
+              'Cell Phones & Accessories', 'Health & Household', 'Handmade Products', 'Beauty & Personal Care', 'Appliances', 
+              'Clothing, Shoes & Jewelry', 'Industrial & Scientific', 'Tools & Home Improvement', 'Kitchen & Dining', 
+              'Movies & TV', 'CDs & Vinyl']
 
 # Total de vente par catégories
 total_prices_per_category = []
@@ -17,12 +22,6 @@ for price in categories:
 
 sorted_prices, sorted_avg_prices = zip(*sorted(zip(categories, total_prices_per_category), key=lambda x: x[1], reverse=True))
 
-price_test = df.loc[df['Category'] == 'Appliances', ['Price']]
-total_test = price_test['Price'].sum()
-num_row = price_test.shape[0]
-avg_test = round(total_test / num_row, 1)
-
-print(avg_test)
 
 # Création du graphique
 plt.bar(sorted_prices, sorted_avg_prices)
