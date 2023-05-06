@@ -1,12 +1,17 @@
-import matplotlib.pyplot as plt
-import pandas as pd
+class Pierre:
+    def __init__(self,name):
+        self.name = name
+        self.firstname = 'Chevin'
 
-df = pd.read_csv('Analyze/AMZ_Data_Clean.csv')
+    def read(self):
+        print(self.name)
 
-focus = df.loc[:, ['Number of Images', 'Category']]
-focus = focus.sort_values('Number of Images', ascending=False)
+class test (Pierre):
+    def arg (self,name):
+        Pierre.__init__(self,name)
 
-category_names = focus['Category'].unique()
-print("Les différentes catégories sont :", category_names)
+
+x = test('Pierre')
+x.read()
 
 
