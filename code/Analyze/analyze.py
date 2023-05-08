@@ -1,17 +1,8 @@
-class Pierre:
-    def __init__(self,name):
-        self.name = name
-        self.firstname = 'Chevin'
+import matplotlib.pyplot as plt
+import pandas as pd
 
-    def read(self):
-        print(self.name)
+df = pd.read_csv('Analyze/AMZ_Data_Clean.csv')
 
-class test (Pierre):
-    def arg (self,name):
-        Pierre.__init__(self,name)
+seller = df['Reviews Rating'].max()
 
-
-x = test('Pierre')
-x.read()
-
-
+print(seller)
