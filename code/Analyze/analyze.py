@@ -1,20 +1,16 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+import AvgPriceperCat, ImageRatio, MonthlyRevenueperCat, MonthlySalesperCat, RevenueperPrice, ReviewperCat, SalesperCategory, SalesperPrice, SalesperReview, SellerperCat, SellerperMonthlySales, SellersperPrice
 
-df = pd.read_csv('Analyze/AMZ_Data_Clean.csv')
+fig = plt.figure(figsize=(20, 20))
 
-note = [1, 2, 3, 4, 5]
-labels = ['1-2', '2-3', '3-4', '4-5']
+plots = [AvgPriceperCat(), ImageRatio(), MonthlyRevenueperCat(), MonthlySalesperCat(),
+         RevenueperPrice(), ReviewperCat(), SalesperCategory(), SalesperPrice(),
+         SalesperReview(), SellerperCat(), SellerperMonthlySales(), SellersperPrice()]
 
-df['Review'] = pd.cut(df['Reviews Rating'], bins=note, labels=labels)
-group = df.groupby ('Review') ['Monthly Sales'].sum()
-
-group.plot(kind='bar')
-
-# Configuration des labels et des titres
-plt.xlabel('Catégories de ventes mensuelles')
-plt.ylabel('Nombre de vendeurs')
-plt.title('Nombre de vendeurs par catégorie de ventes mensuelles')
-
-# Affichage du graphique
+for i, plot in enumerate(plots, start=1):
+    ax = fig.add_subplot(4, 3, i)
+    plot.plot(ax)
+  
+plt.tight_layout()
 plt.show()
