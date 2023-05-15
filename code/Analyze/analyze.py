@@ -1,27 +1,28 @@
 import os
+import selenium
 from time import sleep
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.firefox.service import Service
 
-# Configurez le pilote Chrome pour télécharger le fichier dans le répertoire souhaité
-chrome_options = Options()
+print(selenium.__version__)
+
+# Configurez le pilote Firefox pour télécharger le fichier dans le répertoire souhaité
+firefox_options = Options()
 download_dir = os.path.join(os.getcwd(), 'downloads')
 os.makedirs(download_dir, exist_ok=True)
 
-chrome_options.add_experimental_option(
-    "prefs", {
-        "download.default_directory": download_dir,
-        "download.prompt_for_download": False,
-        "download.directory_upgrade": True,
-        "plugins.always_open_pdf_externally": True
-    }
-)
+firefox_options.set_preference("browser.download.folderList", 2)
+firefox_options.set_preference("browser.download.manager.showWhenStarting", False)
+firefox_options.set_preference("browser.download.dir", download_dir)
+firefox_options.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/octet-stream,application/vnd.ms-excel")
 
-# Initialisez le pilote Chrome avec les options spécifiées
-driver = webdriver.Chrome(executable_path='/Users/pierrechevin/Downloads/driverchrome/chromedriver', options=chrome_options)
+# Passez l'objet de service à la méthode webdriver.Firefox()
+driver = webdriver.Firefox(executable_path='/Users/pierrechevin/Downloads/geckodriver', options=firefox_options)
 
 # Chargez la page web
 driver.get('https://members.helium10.com/black-box/products?accountId=1543470661')
+sleep(5)  # Ajoutez une pause pour que la page ait le temps de se charger
 
 # Remplacez par vos identifiants
 username = 'chevin.pierre.tomas@gmail.com'
@@ -30,10 +31,10 @@ password = 'Elsalvador60?'
 # Remplacez par les sélecteurs CSS appropriés
 username_selector = '#loginform-email'
 password_selector = '#loginform-password'
-login_button_selector = '.btn btn-secondary btn-block'
+login_button_selector = '.btn.btn-secondary.btn-block'
 
 # Localisez les champs de saisie des identifiants et le bouton de connexion
-username_field = driver.find_element_by_css_selector(username_selector)
+username_field = driver.find_element_by_id("loginform-email")
 password_field = driver.find_element_by_css_selector(password_selector)
 login_button = driver.find_element_by_css_selector(login_button_selector)
 
@@ -48,7 +49,9 @@ login_button.click()
 sleep(5)
 
 # Localisez le bouton de téléchargement et cliquez dessus
-download_button = driver.find_element_by_css_selector('.sc-llYSUQ bhKSKZ')
+# Assurez-vous que le sélecteur CSS est correct
+download_button_selector = '.sc-llYSUQ.bhKSKZ'  # Ici, il manque un point entre les deux classes
+download_button = driver.find_element_by_css_selector(download_button_selector)
 download_button.click()
 
 # Attendez que le fichier soit téléchargé
