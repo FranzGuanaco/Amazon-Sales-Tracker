@@ -34,9 +34,9 @@ password_selector = '#loginform-password'
 login_button_selector = '.btn.btn-secondary.btn-block'
 
 # Localisez les champs de saisie des identifiants et le bouton de connexion
-username_field = driver.find_element_by_id("loginform-email")
-password_field = driver.find_element_by_css_selector(password_selector)
-login_button = driver.find_element_by_css_selector(login_button_selector)
+username_field = driver.find_element("css selector", "#loginform-email")
+password_field = driver.find_element("css selector", password_selector)
+login_button = driver.find_element("css selector", login_button_selector)
 
 # Remplissez les champs de saisie avec vos identifiants
 username_field.send_keys(username)
