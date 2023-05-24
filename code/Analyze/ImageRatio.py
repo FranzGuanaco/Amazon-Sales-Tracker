@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+from pymongo import MongoClient
 
 df = pd.read_csv('Analyze/AMZ_Data_Clean.csv')
 
@@ -29,6 +30,12 @@ plt.xticks(rotation=90)
 
 # Affichage du graphique
 plt.show()
+
+# Connexion à la base de données MongoDB
+client = MongoClient('mongodb://localhost:27017/')
+
+# Sélection de la base de données
+db = client['mydatabase']
 
 
 
