@@ -37,6 +37,17 @@ client = MongoClient('mongodb://localhost:27017/')
 # Sélection de la base de données
 db = client['mydatabase']
 
+# Convertir les données du DataFrame en une liste de dictionnaires (documents)
+data = df.to_dict(orient='records')
+
+# Sélection de la collection dans laquelle vous souhaitez insérer les données
+collection = db['mycollection']
+
+# Insérer les données dans la collection
+collection.insert_many(data)
+
+# Vérifier les collections dans la base de données
+print(db.list_collection_names())
 
 
 
