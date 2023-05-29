@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+from pymongo import MongoClient
 
 
 df = pd.read_csv('Analyze/AMZ_Data_Clean.csv')
@@ -35,3 +36,16 @@ plt.xticks(rotation=90)
 
 # Affichage du graphique
 plt.show()
+
+client = MongoClient('mongodb://localhost:27017/')
+
+# Sélection de la base de données
+db = client['mydatabase']
+collection = db['mycollection']
+db['mycollection'].rename('AvgPricePerCat')
+
+data = []
+for category, avg_prices in zip(categories, sorted_avg_prices):
+    data.append({'Category': category, 'Average Price': avg_prices})
+
+collection.insert_many(data)

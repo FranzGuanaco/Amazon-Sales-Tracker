@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+from pymongo import MongoClient
 
 df = pd.read_csv('Analyze/AMZ_Data_Clean.csv')
 
@@ -33,3 +34,18 @@ plt.xticks(rotation=90)
 
 # Affichage du graphique
 plt.show()
+
+# Connexion à la base de données MongoDB
+client = MongoClient('mongodb://localhost:27017/')
+
+# Sélection de la base de données
+db = client['mydatabase']
+
+# Sélection de la collection dans laquelle vous souhaitez insérer les données
+collection = db['MonthlyRevenueperCat']
+
+data = []
+for category, monthly_revenue in zip(categories, total_revenue_per_category):
+    data.append({'Category': category, 'Average Images': monthly_revenue})
+
+collection.insert_many(data)

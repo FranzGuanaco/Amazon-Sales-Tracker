@@ -41,6 +41,7 @@ db = client['mydatabase']
 
 # Sélection de la collection dans laquelle vous souhaitez insérer les données
 collection = db['mycollection']
+db['mycollection'].rename('AvgImagePerCat')
 
 data = []
 for category, avg_images in zip(sorted_categories, sorted_avg_images):
