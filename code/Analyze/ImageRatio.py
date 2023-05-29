@@ -4,6 +4,8 @@ from pymongo import MongoClient
 
 df = pd.read_csv('Analyze/AMZ_Data_Clean.csv')
 
+print(df.columns)
+
 # Liste des catégories
 categories = ['Electronics', 'Home & Kitchen', 'Video Games', 'Books', 'Software', 'Computers & Accessories', 'Camera & Photo', 'Sports & Outdoors', 'Musical Instruments', 'Toys & Games', 'Patio, Lawn & Garden', 'Pet Supplies', 'Office Products', 'Arts, Crafts & Sewing', 'Baby Products', 'Grocery & Gourmet Food', 'Cell Phones & Accessories', 'Health & Household', 'Handmade Products', 'Beauty & Personal Care', 'Appliances', 'Clothing, Shoes & Jewelry', 'Industrial & Scientific', 'Tools & Home Improvement', 'Kitchen & Dining', 'Movies & TV', 'CDs & Vinyl']
 
@@ -37,14 +39,15 @@ client = MongoClient('mongodb://localhost:27017/')
 # Sélection de la base de données
 db = client['mydatabase']
 
-# Convertir les données du DataFrame en une liste de dictionnaires (documents)
-data = df.to_dict(orient='records')
-
 # Sélection de la collection dans laquelle vous souhaitez insérer les données
 collection = db['mycollection']
 
-# Insérer les données dans la collection
+data = []
+for category, avg_images in zip(sorted_categories, sorted_avg_images):
+    data.append({'Category': category, 'Average Images': avg_images})
+
 collection.insert_many(data)
+
 
 # Vérifier les collections dans la base de données
 print(db.list_collection_names())
