@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+from pymongo import MongoClient
 
 df = pd.read_csv('Analyze/AMZ_Data_Clean.csv')
 
@@ -18,5 +19,6 @@ plt.title('Nombre de vendeurs par catégorie de ventes mensuelles')
 
 # Affichage du graphique
 plt.show()
+
 
 

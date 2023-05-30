@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+from pymongo import MongoClient
 
 df = pd.read_csv('Analyze/AMZ_Data_Clean.csv')
 
@@ -33,5 +34,21 @@ plt.title('Revenu mensuel moyen par prix')
 
 # Affichage du graphique
 plt.show()
+
+client = MongoClient('mongodb://localhost:27017/')
+
+# Sélection de la base de données
+db = client['mydatabase']
+
+# Sélection de la collection dans laquelle vous souhaitez insérer les données
+collection = db['SalesPerPrice']
+
+
+data = []
+for price, sales in zip(price_ranges, total_sales_per_price):
+    data.append({'Sales': price, 'Price': sales})
+
+collection.insert_many(data)
+
 print(price_ranges[0+1])
 

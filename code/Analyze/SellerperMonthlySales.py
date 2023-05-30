@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from pymongo import MongoClient
 
 df = pd.read_csv('Analyze/AMZ_Data_Clean.csv')
 
@@ -21,3 +22,18 @@ plt.title('Nombre de vendeurs par catégorie de ventes mensuelles')
 
 # Affichage du graphique
 plt.show()
+
+client = MongoClient('mongodb://localhost:27017/')
+
+# Sélection de la base de données
+db = client['mydatabase']
+
+# Sélection de la collection dans laquelle vous souhaitez insérer les données
+collection = db['SellerPerMonthlySales']
+
+
+data = []
+for category, sellers in sellers_by_category.items():
+    data.append({'Category': category, 'Number of Sellers': sellers})
+
+collection.insert_many(data)
