@@ -5,6 +5,8 @@ import numpy as np
 
 df = pd.read_csv('Analyze/AMZ_Data_Clean.csv')
 
+print(df.columns)
+
 # Catégories de prix
 # Définition des intervalles de prix pour chaque catégorie
 price_ranges = [5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400]

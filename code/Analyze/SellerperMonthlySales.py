@@ -29,11 +29,10 @@ client = MongoClient('mongodb://localhost:27017/')
 db = client['mydatabase']
 
 # Sélection de la collection dans laquelle vous souhaitez insérer les données
-collection = db['SellerPerMonthlySales']
-
+collection = db['SellerPerCat']
 
 data = []
-for category, sellers in sellers_by_category.items():
-    data.append({'Category': category, 'Number of Sellers': sellers})
+for price, seller in zip(price_ranges, avg_sellers_per_price):
+    data.append({'Category': price, 'Average seller': seller})
 
 collection.insert_many(data)
