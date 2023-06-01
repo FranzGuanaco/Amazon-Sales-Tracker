@@ -18,8 +18,8 @@ for note in sorted_unique_values:
 for note, avg_price in average_prices.items():
     print(f"Note {note}: Moyenne des prix = {avg_price}")
 
-# Tracé du graphique à barres
-plt.scatter(average_prices.keys(), average_prices.values())
+# Tracé du graphique en ligne
+plt.plot(sorted_unique_values, list(average_prices.values()), marker='o')
 
 # Configuration des étiquettes et du titre
 plt.xlabel('Notes')
@@ -29,3 +29,5 @@ plt.title('Prix moyen par note')
 # Affichage du graphique
 plt.show()
 print(sorted_unique_values[1])
+
+
