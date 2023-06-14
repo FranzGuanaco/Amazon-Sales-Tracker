@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+from pymongo import MongoClient
 
 df = pd.read_csv('Analyze/AMZ_Data_Clean.csv')
 
@@ -30,4 +31,17 @@ plt.title('Prix moyen par note')
 plt.show()
 print(sorted_unique_values[1])
 
+# Connexion à la base de données MongoDB
+client = MongoClient('mongodb://localhost:27017/')
 
+# Sélection de la base de données
+db = client['mydatabase']
+
+# Sélection de la collection dans laquelle vous souhaitez insérer les données
+collection = db['ReviewPerPrice']
+
+data = []
+for review, sellercat in zip(sorted_unique_values, list(average_prices.values())):
+    data.append({'Review': review, 'Average Price': sellercat})
+
+collection.insert_many(data)

@@ -37,3 +37,18 @@ plt.xticks(rotation=90)
 
 # Affichage du graphique
 plt.show()
+
+# Connexion à la base de données MongoDB
+client = MongoClient('mongodb://localhost:27017/')
+
+# Sélection de la base de données
+db = client['mydatabase']
+
+# Sélection de la collection dans laquelle vous souhaitez insérer les données
+collection = db['MedianReviewPerCat']
+
+data = []
+for category, sellercat in zip(categories, total_seller_per_category):
+    data.append({'Category': category, 'Total seller': sellercat})
+
+collection.insert_many(data)
