@@ -39,6 +39,6 @@ collection = db['SellerPerCat']
 
 data = []
 for price, seller in zip(price_ranges, avg_sellers_per_price):
-    data.append({'Category': price, 'Average seller': seller})
+    data.append({'Category': price, 'Average number of seller': seller})
 
 collection.insert_many(data)

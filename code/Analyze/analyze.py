@@ -1,18 +1,12 @@
 import os
-import selenium
-import subprocess
-import sys
 from time import sleep
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
 
-print(selenium.__version__)
-
-# Configurez le pilote Firefox pour télécharger le fichier dans le répertoire souhaité
+# Configure the Firefox driver to download files to the desired directory
 firefox_options = Options()
 download_dir = os.path.join(os.getcwd(), 'downloads')
 os.makedirs(download_dir, exist_ok=True)
@@ -22,90 +16,70 @@ firefox_options.set_preference("browser.download.manager.showWhenStarting", Fals
 firefox_options.set_preference("browser.download.dir", download_dir)
 firefox_options.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/octet-stream,application/vnd.ms-excel")
 
-# Passez l'objet de service à la méthode webdriver.Firefox()
-driver = webdriver.Firefox(executable_path='/Users/pierrechevin/Downloads/geckodriver', options=firefox_options)
+# Create a Service object with the path to geckodriver
+firefox_service = Service('/Users/pierrechevin/Downloads/geckodriver')
 
-# Chargez la page web
+# Pass the Service object and options to the webdriver.Firefox()
+driver = webdriver.Firefox(service=firefox_service, options=firefox_options)
+
+# Load the web page
 driver.get('https://members.helium10.com/black-box/products?accountId=1543470661')
-sleep(5)  # Ajoutez une pause pour que la page ait le temps de se charger
+sleep(5)  # Add a pause to allow the page to load
 
-# Remplacez par vos identifiants
+# Replace with your credentials
 username = 'chevin.pierre.tomas@gmail.com'
 password = 'Elsalvador60?'
 
-# Remplacez par les sélecteurs CSS appropriés
+# Replace with the appropriate CSS selectors
 username_selector = '#loginform-email'
 password_selector = '#loginform-password'
 login_button_selector = '.btn.btn-secondary.btn-block'
 
+# Locate the username and password fields and the login button
+username_field = driver.find_element(By.CSS_SELECTOR, username_selector)
+password_field = driver.find_element(By.CSS_SELECTOR, password_selector)
+login_button = driver.find_element(By.CSS_SELECTOR, login_button_selector)
 
-# Localisez les champs de saisie des identifiants et le bouton de connexion
-username_field = driver.find_element("css selector", "#loginform-email")
-password_field = driver.find_element("css selector", password_selector)
-login_button = driver.find_element("css selector", login_button_selector)
-
-# Remplissez les champs de saisie avec vos identifiants
+# Fill in the input fields with your credentials
 username_field.send_keys(username)
 password_field.send_keys(password)
-sleep(20)
-# Cliquez sur le bouton de connexion
+
+# Click on the login button
 login_button.click()
 
-sleep(5)
+sleep(35)
 
-# Localisez le bouton de téléchargement et cliquez dessus
-# Assurez-vous que le sélecteur CSS est correct
-# Localisez le bouton de téléchargement
-download_button_selector = '.sc-ikJyIC.kmfDQj'  # Sélecteur CSS du bouton de téléchargement
-download_button = driver.find_element("css selector", download_button_selector)
+# Replace with the appropriate CSS selector for the search input
+search_input_selector = '[data-testid="search"]'
+search_input = driver.find_element(By.CSS_SELECTOR, search_input_selector)
 
-# Faites défiler l'élément dans la vue
-driver.execute_script("arguments[0].scrollIntoView(true);", download_button)
+# Scroll to the search input element using JavaScript
+driver.execute_script("arguments[0].scrollIntoView();", search_input)
 
-# Cliquez sur le bouton de téléchargement à l'aide de JavaScript
-driver.execute_script("arguments[0].click();", download_button)
+sleep(15)
 
-# Attendez que le fichier soit téléchargé
-sleep(10)
+# tout marche
+search_input.click()
 
-# Localisez le bouton déroulant
-dropdown_button_selector = '.sc-ikJyIC.sc-hrjYtz.jKrrPL.dXeRAJ.sc-gHERNO.dDsDpY'
-dropdown_button = driver.find_element("css selector", dropdown_button_selector)
+sleep(15)
 
-# Cliquez sur le bouton déroulant
-dropdown_button.click()
+# Replace with the appropriate CSS selector for the download button
+download_button_selector = '.sc-ezbkAF.sc-frCSdB.jMqZzF.cdqGrQ.sc-eoZuQF.jusArX.sc-eoZuQF.jusArX'
+download_button = driver.find_element(By.CSS_SELECTOR, download_button_selector)
 
-sleep(1)
-
-# Localisez le bouton de téléchargement du document
-download_button_selector = '.sc-caiLqq.haRiMa'
-download_button = driver.find_element("css selector", download_button_selector)
-
-# Cliquez sur le bouton de téléchargement du document
+# Click on the download button
 download_button.click()
 
-sleep(3)
+sleep(13)
 
-download_dir = os.path.join(os.getcwd(), 'downloads')
+dropdown_button_selector = '.sc-ehCJOs.aRWDJ'
+dropdown_button = driver.find_element(By.CSS_SELECTOR, dropdown_button_selector)
+dropdown_button.click()
 
-# Liste tous les fichiers du répertoire de téléchargement
-files = os.listdir(download_dir)
+# Wait for the file to be downloaded
+sleep(10)
 
-# Parcourez les fichiers et ouvrez le fichier souhaité
-for file in files:
-    if file.endswith('.csv'):  # Remplacez '.csv' par l'extension de votre fichier
-        file_path = os.path.join(download_dir, file)
-        # Ouvre le fichier avec l'application par défaut du système
-        if sys.platform.startswith('darwin'):  # Pour macOS
-            subprocess.call(['open', file_path])
-        elif sys.platform.startswith('win32'):  # Pour Windows
-            subprocess.call(['start', file_path], shell=True)
-        elif sys.platform.startswith('linux'):  # Pour Linux
-            subprocess.call(['xdg-open', file_path])
-        break
-
-sleep(12)
-
-# Fermez le navigateur
+# Close the browser
 driver.quit()
+
 
